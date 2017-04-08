@@ -34,5 +34,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-par:natives-macos:3.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-stb:natives-macos:3.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-tinyfd:natives-macos:3.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.joml:joml:1.9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.l33tlabs.twl:pngdecoder:1.0" level="project" />
   </component>
 </module>
