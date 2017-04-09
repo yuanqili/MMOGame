@@ -56,21 +56,20 @@ public class DummyGame implements IGameLogic {
         renderer.init(window);
 
         float reflectance = 1f;
-        //Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
-        //Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
+//        Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
+//        Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
 
-        Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
-        Texture texture = new Texture("/textures/grassblock.png");
-        Material material = new Material(texture, reflectance);
+        // load model
+//        Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
+//        Texture texture = new Texture("/textures/grassblock.png");
+//        Material material = new Material(texture, reflectance);
+        Mesh mesh = OBJLoader.loadMesh("/models/dwarfSword.obj");
+        Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
 
         mesh.setMaterial(material);
         GameItem gameItem = new GameItem(mesh);
-        gameItem.setScale(0.5f);
+        gameItem.setScale(0.2f);
         gameItem.setPosition(0, 0, -2);
-        //gameItem.setPosition(0, 0, -2);
-        //gameItem.setScale(0.1f);
-        //gameItem.setPosition(0, 0, -2);
-        //gameItem.setPosition(0, 0, -0.2f);
         gameItems = new GameItem[]{gameItem};
 
         ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);

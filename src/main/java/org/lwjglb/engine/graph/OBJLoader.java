@@ -2,10 +2,16 @@ package org.lwjglb.engine.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.sun.deploy.util.ArrayUtil;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjglb.engine.Utils;
 
+/**
+ * A simple `.obj` file loader. Currently it only supports simple `.obj` files.
+ * TODO: translate multi-index attributes to single-index.
+ */
 public class OBJLoader {
 
     public static Mesh loadMesh(String fileName) throws Exception {
@@ -21,25 +27,17 @@ public class OBJLoader {
             switch (tokens[0]) {
                 case "v":
                     // Geometric vertex
-                    Vector3f vec3f = new Vector3f(
-                            Float.parseFloat(tokens[1]),
-                            Float.parseFloat(tokens[2]),
-                            Float.parseFloat(tokens[3]));
+                    Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]), Float.parseFloat(tokens[3]));
                     vertices.add(vec3f);
                     break;
                 case "vt":
                     // Texture coordinate
-                    Vector2f vec2f = new Vector2f(
-                            Float.parseFloat(tokens[1]),
-                            Float.parseFloat(tokens[2]));
+                    Vector2f vec2f = new Vector2f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
                     textures.add(vec2f);
                     break;
                 case "vn":
                     // Vertex normal
-                    Vector3f vec3fNorm = new Vector3f(
-                            Float.parseFloat(tokens[1]),
-                            Float.parseFloat(tokens[2]),
-                            Float.parseFloat(tokens[3]));
+                    Vector3f vec3fNorm = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]), Float.parseFloat(tokens[3]));
                     normals.add(vec3fNorm);
                     break;
                 case "f":
@@ -56,37 +54,32 @@ public class OBJLoader {
 
     private static Mesh reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
                                      List<Vector3f> normList, List<Face> facesList) {
-
-        List<Integer> indices = new ArrayList();
-        // Create position array in the order it has been declared
+        // position list
         float[] posArr = new float[posList.size() * 3];
-        int i = 0;
-        for (Vector3f pos : posList) {
-            posArr[i * 3] = pos.x;
-            posArr[i * 3 + 1] = pos.y;
-            posArr[i * 3 + 2] = pos.z;
-            i++;
+        for (int i = 0; i < posList.size(); i++) {
+            posArr[i * 3 + 0] = posList.get(i).x;
+            posArr[i * 3 + 1] = posList.get(i).y;
+            posArr[i * 3 + 2] = posList.get(i).z;
         }
+
+        // textcoord and normal list
+        List<Integer> indices = new ArrayList();
         float[] textCoordArr = new float[posList.size() * 2];
         float[] normArr = new float[posList.size() * 3];
-
         for (Face face : facesList) {
-            IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
-            for (IdxGroup indValue : faceVertexIndices) {
-                processFaceVertex(indValue, textCoordList, normList,
-                        indices, textCoordArr, normArr);
+            for (IdxGroup idxGroup : face.getFaceVertexIndices()) {
+                processFaceVertex(idxGroup, textCoordList, normList, indices, textCoordArr, normArr);
             }
         }
-        int[] indicesArr = new int[indices.size()];
-        indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
-        Mesh mesh = new Mesh(posArr, textCoordArr, normArr, indicesArr);
-        return mesh;
+
+        // generate Mesh object
+        int[] indicesArr = indices.stream().mapToInt(Integer::intValue).toArray();
+        return new Mesh(posArr, textCoordArr, normArr, indicesArr);
     }
 
     private static void processFaceVertex(IdxGroup indices, List<Vector2f> textCoordList,
                                           List<Vector3f> normList, List<Integer> indicesList,
                                           float[] texCoordArr, float[] normArr) {
-
         // Set index for vertex coordinates
         int posIndex = indices.idxPos;
         indicesList.add(posIndex);
@@ -94,28 +87,28 @@ public class OBJLoader {
         // Reorder texture coordinates
         if (indices.idxTextCoord >= 0) {
             Vector2f textCoord = textCoordList.get(indices.idxTextCoord);
-            texCoordArr[posIndex * 2] = textCoord.x;
+            texCoordArr[posIndex * 2 + 0] = textCoord.x;
             texCoordArr[posIndex * 2 + 1] = 1 - textCoord.y;
         }
+
+        // Reorder vector normals
         if (indices.idxVecNormal >= 0) {
-            // Reorder vectornormals
             Vector3f vecNorm = normList.get(indices.idxVecNormal);
-            normArr[posIndex * 3] = vecNorm.x;
+            normArr[posIndex * 3 + 0] = vecNorm.x;
             normArr[posIndex * 3 + 1] = vecNorm.y;
             normArr[posIndex * 3 + 2] = vecNorm.z;
         }
     }
 
+    /**
+     * Three-vertex face.
+     */
     protected static class Face {
 
-        /**
-         * List of idxGroup groups for a face triangle (3 vertices per face).
-         */
         private IdxGroup[] idxGroups = new IdxGroup[3];
 
         public Face(String v1, String v2, String v3) {
             idxGroups = new IdxGroup[3];
-            // Parse the lines
             idxGroups[0] = parseLine(v1);
             idxGroups[1] = parseLine(v2);
             idxGroups[2] = parseLine(v3);
@@ -128,9 +121,8 @@ public class OBJLoader {
             int length = lineTokens.length;
             idxGroup.idxPos = Integer.parseInt(lineTokens[0]) - 1;
             if (length > 1) {
-                // It can be empty if the obj does not define text coords
                 String textCoord = lineTokens[1];
-                idxGroup.idxTextCoord = textCoord.length() > 0 ? Integer.parseInt(textCoord) - 1 : IdxGroup.NO_VALUE;
+                idxGroup.idxTextCoord = !textCoord.isEmpty() ? Integer.parseInt(textCoord) - 1 : IdxGroup.NO_VALUE;
                 if (length > 2) {
                     idxGroup.idxVecNormal = Integer.parseInt(lineTokens[2]) - 1;
                 }
@@ -144,6 +136,9 @@ public class OBJLoader {
         }
     }
 
+    /**
+     * Index group for a vertex, composed of its position, texture, and normal.
+     */
     protected static class IdxGroup {
 
         public static final int NO_VALUE = -1;

@@ -26,12 +26,12 @@ public class Mesh {
         FloatBuffer textCoordsBuffer = null;
         FloatBuffer vecNormalsBuffer = null;
         IntBuffer indicesBuffer = null;
-        try {
-            vertexCount = indices.length;
-            vboIdList = new ArrayList();
 
-            vaoId = glGenVertexArrays();
+        try {
+            this.vaoId = glGenVertexArrays();
             glBindVertexArray(vaoId);
+            this.vboIdList = new ArrayList();
+            this.vertexCount = indices.length;
 
             // Position VBO
             int vboId = glGenBuffers();
@@ -71,18 +71,10 @@ public class Mesh {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
         } finally {
-            if (posBuffer != null) {
-                MemoryUtil.memFree(posBuffer);
-            }
-            if (textCoordsBuffer != null) {
-                MemoryUtil.memFree(textCoordsBuffer);
-            }
-            if (vecNormalsBuffer != null) {
-                MemoryUtil.memFree(vecNormalsBuffer);
-            }
-            if (indicesBuffer != null) {
-                MemoryUtil.memFree(indicesBuffer);
-            }
+            if (posBuffer != null)        MemoryUtil.memFree(posBuffer);
+            if (textCoordsBuffer != null) MemoryUtil.memFree(textCoordsBuffer);
+            if (vecNormalsBuffer != null) MemoryUtil.memFree(vecNormalsBuffer);
+            if (indicesBuffer != null)    MemoryUtil.memFree(indicesBuffer);
         }
     }
 
@@ -117,6 +109,7 @@ public class Mesh {
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
 
+        // Draw
         glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
 
         // Restore state
