@@ -1106,7 +1106,7 @@
       <workItem from="1491625053329" duration="5687000" />
       <workItem from="1491632255605" duration="359000" />
       <workItem from="1491693656493" duration="413000" />
-      <workItem from="1491694389440" duration="7820000" />
+      <workItem from="1491694389440" duration="7841000" />
     </task>
     <task id="LOCAL-00001" summary="add joml and pngdecoder">
       <created>1491624757071</created>
@@ -1115,11 +1115,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491624757071</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="refactor">
+      <created>1491705440463</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1491705440463</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32985000" />
+    <option name="totallyTimeSpent" value="33006000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1210,7 +1217,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add joml and pngdecoder" />
-    <option name="LAST_COMMIT_MESSAGE" value="add joml and pngdecoder" />
+    <MESSAGE value="refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
