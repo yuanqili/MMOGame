@@ -69,7 +69,7 @@ public class ShaderProgram {
 
     public void createMaterialUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
-        createUniform(uniformName + ".useColour");
+        createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".reflectance");
     }
 
@@ -140,7 +140,7 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, Material material) {
         setUniform(uniformName + ".colour", material.getColour());
-        setUniform(uniformName + ".useColour", material.isTextured() ? 0 : 1);
+        setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }
 
