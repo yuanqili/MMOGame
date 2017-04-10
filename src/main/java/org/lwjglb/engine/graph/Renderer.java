@@ -46,8 +46,8 @@ public class Renderer {
     private void setupSceneShader() throws Exception {
         // Create shader
         sceneShaderProgram = new ShaderProgram();
-        sceneShaderProgram.createVertexShader(Utils.loadResource("/shaders/vertex.vs"));
-        sceneShaderProgram.createFragmentShader(Utils.loadResource("/shaders/fragment.fs"));
+        sceneShaderProgram.createVertexShader(Utils.loadResource("/shaders/scene_vertex.vs"));
+        sceneShaderProgram.createFragmentShader(Utils.loadResource("/shaders/scene_fragment.fs"));
         sceneShaderProgram.link();
 
         // Create uniforms for modelView and projection matrices and texture

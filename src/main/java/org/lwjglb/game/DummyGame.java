@@ -114,10 +114,10 @@ public class DummyGame implements IGameLogic {
         } else if (window.isKeyPressed(GLFW_KEY_D)) {
             cameraInc.x = 1;
         }
-        if (window.isKeyPressed(GLFW_KEY_Z)) {
-            cameraInc.y = -1;
-        } else if (window.isKeyPressed(GLFW_KEY_X)) {
+        if (window.isKeyPressed(GLFW_KEY_SPACE)) {
             cameraInc.y = 1;
+        } else if (window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
+            cameraInc.y = -1;
         }
         SpotLight[] spotLightList = sceneLight.getSpotLightList();
         float lightPos = spotLightList[0].getPointLight().getPosition().z;
