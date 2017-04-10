@@ -112,6 +112,10 @@ public class Window {
         // Support for transparencies
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // Enable surface culling
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
     }
 
     public long getWindowHandle() {
